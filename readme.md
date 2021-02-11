@@ -6,8 +6,6 @@
 
 下载本项目后双击 index.html 浏览器打开即可 左上角有配置项以及配置的json
 
-
-
 ## 基础使用
 
 本插件需要配合HTML进行使用, canvas的大小是它父元素的大小, 并且已经做了窗口大小改变进行自适应的操作
@@ -86,3 +84,8 @@ let snow = new Snow(element)
 
 `snow.unbindMouse()`
 
+### 修改大小
+
+`snow.resize()`
+
+当父元素大小发生变化但是浏览器窗口并未发生变化需要手动触发resize方法进行canvas大小的调整
