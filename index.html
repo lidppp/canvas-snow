@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body,
+      .bac {
+        width: 100%;
+        height: 100%;
+      }
+
+      .bac {
+        background: url('./031.jpg') no-repeat top left/cover;
+        /*background: #000;*/
+        filter: blur(6px) grayscale(50%);
+      }
+
+      .canvas-box {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .setting-box {
+        width: max-content;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .setting-box span.item-text {
+        display: inline-block;
+        width: 100px;
+      }
+
+      .setting-box input,
+      .setting-box textarea {
+        display: inline-block;
+        width: 300px;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css"
+    />
+  </head>
+  <body>
+    <div class="bac" style="overflow: hidden"></div>
+    <div class="canvas-box">
+      <canvas id="can" width="100%" height="100%">
+        您的浏览器不支持canvas, 请下载最新的浏览器
+      </canvas>
+    </div>
+
+    <div class="setting-box">
+      <div class="sitting">
+        <div>
+          <span class="item-text">速度</span>
+          <input id="speed" value="10" type="number" />
+        </div>
+        <div>
+          <span class="item-text">数量</span>
+          <input id="num" value="300" type="number" />
+        </div>
+
+        <div>
+          <span class="item-text">雪花颜色</span>
+          <div id="test1"></div>
+        </div>
+
+        <div>
+          <span class="item-text">雪花外层颜色</span>
+          <div id="test2"></div>
+        </div>
+
+        <div>
+          <span class="item-text">雪花最大半径</span>
+          <input id="max" value="8" type="number" />
+        </div>
+
+        <div>
+          <span class="item-text">雪花最小半径</span>
+          <input id="min" value="3" type="number" />
+        </div>
+
+        <div>
+          <span class="item-text">开启鼠标事件</span>
+          是<input type="radio" name="mouse" value="true" style="width: auto" />
+          否<input
+            type="radio"
+            name="mouse"
+            value="false"
+            checked
+            style="width: auto"
+          />
+        </div>
+
+        <div>
+          <span class="item-text">当前配置</span>
+          <textarea id="options" rows="9"></textarea>
+        </div>
+
+        <div>
+          <button class="bind">添加鼠标事件</button>
+          <button class="unbind">移除鼠标事件</button>
+        </div>
+
+        <div>
+          <button class="start">点击配置</button>
+          <button class="destroy">点击销毁</button>
+          <button class="hidden">收起</button>
+        </div>
+      </div>
+      <button class="show" style="display: none">展开</button>
+    </div>
+  </body>
+  <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js"></script>
+  <script src="snow.js"></script>
+  <script src="index.js"></script>
+  <script></script>
+</html>
