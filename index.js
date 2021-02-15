@@ -1,10 +1,12 @@
+let snow;
+
 window.onload = function () {
   let wcolor = 'rgba(255,255,255,1)'
   let woutColor = 'rgba(255,255,255,0.3)'
 
   // 初始化
   let element = document.querySelector('#can')
-  let snow = new Snow(element, getvalue())
+  snow = new Snow(element, getvalue())
 
   // 销毁事件
   document.querySelector('.destroy').onclick = () => {
@@ -59,7 +61,9 @@ window.onload = function () {
     let max = parseInt(document.querySelector('#max').value)
     let min = parseInt(document.querySelector('#min').value)
     let defaultMouse =
-      document.querySelector("input[type='radio']:checked").value === 'true'
+      document.querySelector("input[type='radio'][name='mouse']:checked").value === 'true'
+
+    let mouseReverse = document.querySelector("input[type='radio'][name='mouseReverse']:checked").value === 'true'
     let color = wcolor,
       outColor = woutColor
     let obj = {
@@ -70,6 +74,7 @@ window.onload = function () {
       min,
       outColor,
       defaultMouse,
+      mouseReverse
     }
 
     document.querySelector('#options').value = JSON.stringify(obj, null, '\t')

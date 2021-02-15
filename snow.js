@@ -51,6 +51,8 @@ class Snow {
     min: 3,
     // 默认开启鼠标事件
     defaultMouse: false,
+    // 鼠标反向移动
+    mouseReverse: false
   }
 
   // 构造函数
@@ -119,9 +121,11 @@ class Snow {
   move() {
     this.requestID = window.requestAnimationFrame(() => {
       this.clearCanvas()
-
+      if(this.snowArr.length != this.option.num){
+        this.snowArr.length = this.option.num
+      }
       let snowArrCopy = [...this.snowArr]
-      for (let i = 0; i < snowArrCopy.length; i++) {
+      for (let i = 0; i < this.option.num; i++) {
         this.draw(snowArrCopy[i], i)
       }
       this.move()
@@ -130,19 +134,28 @@ class Snow {
 
   // 雪花绘制函数
   draw(options, index) {
+    if(!options){
+      return this.creatSnow(index)
+    }
+
     // 移动雪花
     let rand = options.rand / 3
-    rand < 0.5 && (rand += 0.1)
+    rand < 0.1 && (rand += 0.1)
     options.y += this.option.speed * rand
+    let moveNum = this.mouseOffset * rand * 3
+    // 反向移动
+    this.option.mouseReverse && (moveNum *= -1)
+
+
     switch (Math.abs(options.xmove)) {
       case 0:
-        options.x += this.mouseOffset
+        options.x += moveNum
         break
       case 1:
-        options.x += (this.option.speed * rand) / 3 + this.mouseOffset
+        options.x += (this.option.speed * rand) / 3 + moveNum
         break
       case 2:
-        options.x -= (this.option.speed * rand) / 3 - this.mouseOffset
+        options.x -= (this.option.speed * rand) / 3 - moveNum
         break
     }
 
@@ -180,9 +193,9 @@ class Snow {
 
   // 生成随机大小函数
   randomSize() {
-    !this.ranger && (this.ranger = this.option.max - this.option.min)
+    let ranger = this.option.max - this.option.min
     let rand = Math.random()
-    let size = this.option.min + this.ranger * rand
+    let size = this.option.min + ranger * rand
     return {
       size,
       rand,
@@ -195,9 +208,9 @@ class Snow {
     let randX = -1 * this.width + Math.random() * 2 * this.width
     let randY
     if (flag) {
-      randY = Math.random() * this.height
+      randY = Math.random() * this.height 
     } else {
-      randY = 0 - Math.random() * 200
+      randY = 0 - (Math.random() * 200 + this.option.max)
     }
     return {
       x: randX,
@@ -223,6 +236,7 @@ class Snow {
 
   // 鼠标移动处理事件
   mousemove(e) {
+    console.log(e.movementX)
     this.mouseOffset = e.movementX
   }
 
