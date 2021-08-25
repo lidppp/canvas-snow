@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .parent-box {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .parent-box > div {
+            width: 50%;
+            overflow: auto;
+        }
+
+        #can {
+            margin-left: 100px;
+            border: 1px rgba(255, 0, 0, 0) solid;
+            transition: all;
+        }
+
+        #can.bor {
+            border: 1px red solid;
+        }
+
+        .play {
+            animation: bor infinite 3s alternate;
+        }
+
+        @keyframes bor {
+            from {
+                border: 1px red solid;
+            }
+            to {
+                border: 1px rgba(255, 0, 0, .1) solid;
+            }
+        }
+
+        code, pre {
+            display: block;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        code {
+            background: #3d3d3d;
+            color: #fff;
+            box-sizing: border-box;
+            padding: 12px;
+        }
+
+        .btnBox {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #desc {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="parent-box">
+    <div class="canvas-box">
+        <canvas id="can" width="400" height="400"></canvas>
+    </div>
+    <div class="code">
+        <pre><code id="code"></code></pre>
+    </div>
+</div>
+<div id="desc"></div>
+<div class="btnBox">
+    <button onclick="pre()">上一步</button>
+    <button onclick="next()" style="margin-left: 15px;">下一步</button>
+</div>
+</body>
+<script>
+  let canEl = document.querySelector("#can");
+  let can = canEl.getContext("2d");
+  let code = document.querySelector("#code")
+  let desc = document.querySelector("#desc")
+  let step = 0;
+  // 起始和结束角
+  const START = 0
+  const END = 2 * Math.PI
+  let interValKey = null;
+
+  function pre() {
+    clear();
+    if (step <= 0) {
+      return
+    }
+    step--;
+    window["step" + step]();
+  }
+
+  function next() {
+    console.log("next")
+    clear();
+    if (step >= 100) {
+      return
+    }
+    step++;
+    window["step" + step]();
+  }
+
+  function clear() {
+    code.innerText = "";
+    desc.innerText = ""
+    clearInterval(interValKey)
+    window.cancelAnimationFrame(interValKey)
+    clearCan()
+  }
+
+  function clearCan() {
+    can.clearRect(0, 0, 400, 400)
+  }
+
+  function step1() {
+    canEl.classList.add("play")
+    code.innerText = `<canvas id="can" width="400" height="400"></canvas>
+
+<script>
+let canEl = document.querySelector("#can");
+let can = canEl.getContext("2d");
+<\/script>`
+    desc.innerText = `首先创建一个canvas元素, 并且获取该元素的dom, 通过这个元素的的dom创建出一个可以操作canvas的上下文对象`
+  }
+
+  function step2() {
+    canEl.classList.remove("play");
+    canEl.classList.add("bor");
+    desc.innerText = `通过上下文对象, 对canvas进行操作, 今天画雪花, 所以就先画一个圆出来`
+    code.innerText = `<script>
+// 起始和结束角
+const START = 0
+const END = 2 * Math.PI
+
+can.beginPath()
+can.closePath();
+can.arc(100, 100, 50, START, END)
+can.strokeStyle = 'rgba(0,0,0,0)'
+can.fillStyle = "rgb(255,0,0)"
+can.fill()
+can.stroke()
+<\/script>`
+
+    can.beginPath()
+    can.arc(100, 100, 50, START, END)
+    can.closePath();
+    can.strokeStyle = 'rgba(0,0,0,0)'
+    can.fillStyle = "rgb(255,0,0)"
+    can.fill()
+    can.stroke()
+
+
+  }
+
+  function step3() {
+    desc.innerText = `这个圆是实心的, 和雪花差别有点大, 想想办法把他变成边缘柔和的圆, 其实渐变和阴影都可以实现, 但是阴影过度太硬, 效果不太好, 所以使用渐变`
+    code.innerText = `<script>
+can.beginPath()
+can.arc(100, 100, 50, START, END)
+// 创建径向渐变
+let lingrad = can.createRadialGradient(
+  100,  // 渐变开始圆的坐标x
+  100,  // 渐变开始圆的坐标y
+  12.5, // 渐变开始圆的半径
+  100,  // 渐变结束圆的坐标x
+  100,  // 渐变结束圆的坐标y
+  50    // 渐变结束圆的半径
+)
+// 设置渐变开始的颜色
+lingrad.addColorStop(0, "rgba(255,0,0,1)")
+// 设置渐变结束的颜色
+lingrad.addColorStop(1, "rgba(255,0,0,0)")
+can.closePath()
+can.strokeStyle = 'rgba(0,0,0,0)'
+can.fillStyle = lingrad
+can.fill()
+can.stroke()
+<\/script>`
+
+    can.beginPath()
+    can.arc(100, 100, 50, START, END)
+    // 创建径向渐变
+    let lingrad = can.createRadialGradient(
+      100,  // 渐变开始圆的坐标x
+      100,  // 渐变开始圆的坐标y
+      12.5, // 渐变开始圆的半径
+      100,  // 渐变结束圆的坐标x
+      100,  // 渐变结束圆的坐标y
+      50    // 渐变结束圆的半径
+    )
+    lingrad.addColorStop(0, "rgba(255,0,0,1)")
+    lingrad.addColorStop(1, "rgba(255,0,0,0)")
+
+    can.closePath()
+    can.strokeStyle = 'rgba(0,0,0,0)'
+    can.fillStyle = lingrad
+    can.fill()
+    can.stroke()
+  }
+
+  function step4() {
+    desc.innerText = `现在雪花已经有了, 是时候让它动起来了, 在canvas中让元素动起来其实是很简单的原理. 第一步画出圆的起始位置, 第二步清空画布, 第三步画出圆的下一个位置, 重复以上步骤就可以, 首先封装两个函数出来, 函数1 createSnow用于创建一个雪花对象, 函数2 drawSnow 用于将雪花绘制到画布中`
+    code.innerText = `
+  // 创建一个雪花
+  function createSnow(){
+    return {
+      x:100,
+      y:0,
+      width: 50
+    }
+  }
+
+  // 绘制snow
+  function drawSnow(snow) {
+    can.beginPath()
+    can.arc(snow.w, snow.y, snow.width, START, END)
+    // 创建径向渐变
+    let lingrad = can.createRadialGradient(
+      snow.w, snow.y, snow.width / 4,
+      snow.w, snow.y, snow.width,
+    )
+    lingrad.addColorStop(0, "rgba(255,0,0,1)")
+    lingrad.addColorStop(1, "rgba(255,0,0,0)")
+
+    can.closePath()
+    can.strokeStyle = 'rgba(0,0,0,0)'
+    can.fillStyle = lingrad
+    can.fill()
+    can.stroke()
+  }`
+  }
+
+  function step5() {
+    desc.innerText = `演示三步走是怎么做的`
+    code.innerText = `// 这里先演示一下刚才的三步走是怎么做的, 所以看起来不太连贯`
+
+    let flag = 0
+
+    let snow = createSnowTemp();
+
+    interValKey = setInterval(() => {
+      flag++
+      if (flag % 2 === 0) {
+        can.clearRect(0, 0, 400, 400)
+        return
+      }
+      drawSnow(snow);
+      snow.y += 10;
+      if (snow.y > 470) {
+        snow.y = -25
+      }
+    }, 1000)
+  }
+
+  function step6() {
+    desc.innerText = `接下来让雪花真正的动起来, 这里暂时先使用定时器, 其实定时器有个问题, 无法真正获取到用户屏幕刷新率, 经常玩游戏的肯定知道有一个选项叫垂直同步, 其实就是获取显示器刷新率然后锁死刷新率上限, 有更好的办法让它随着屏幕刷新率定时执行, 这个待会说到`
+    code.innerText = `let snow = createSnow();
+function clearCan() {
+  can.clearRect(0, 0, 400, 400)
+}
+interValKey = setInterval(()=>{
+  clearCan();
+  drawSnow(snow);
+  snow.y++;
+  if (snow.y>470){
+    snow.y = -25
+  }
+},1000/60)`
+    let snow = createSnowTemp();
+
+    interValKey = setInterval(() => {
+      clearCan();
+      drawSnow(snow);
+      snow.y++;
+      if (snow.y > 470) {
+        snow.y = -25
+      }
+    }, 1000 / 60)
+  }
+
+  function step7() {
+    desc.innerText = `一个雪花动的话肯定不行, 现在假设有100朵雪花可以被看到, 使用随机函数计算随机位置, 随机生成雪花来营造一个下雪的效果, 现在就需要继续封装一个move函数进行雪花移动, 同时需要改进一下createSnow函数`
+    code.innerText = `
+  // 创建一个雪花, 随机的
+  function createSnow(flag = false){
+    // let random = Math.random()
+    return {
+      x: Math.random()*400,
+      y: (flag ? -Math.random()*100 : Math.random()*400) ,
+      width: Math.random()*10,
+      speed: Math.random() * 3
+    }
+  }
+
+  // 雪花移动
+  function move(snowArr) {
+    clearCan()
+    for (let i = 0; i < snowArr.length; i++) {
+      snowArr[i].y += snowArr[i].speed
+      if (snowArr[i].y > 470) {
+        snowArr[i] = createSnow(true)
+      }
+      drawSnow(snowArr[i])
+    }
+  }`
+  }
+
+  function step8() {
+    desc.innerText = `准备工作基本完成, 开始下雪吧, 刚才提到过 setInterval 是无法检测到屏幕刷新率的, 所以这次咱们改进一下, 使用一个新的api requestAnimationFrame, 这个api是浏览器根据屏幕刷新率去定时执行的一个api, 需要采用递归的方式执行, 完美避免了高刷屏的卡顿的问题`
+    code.innerText = `
+    // 生成100朵雪花
+    let arr = []
+    for (let i = 0; i < 100; i++) {
+      arr.push(createSnow())
+    }
+
+    function moveSnow(arr) {
+      interValKey = window.requestAnimationFrame(() => {
+          console.log("是否执行");
+        move(arr)
+        moveSnow(arr);
+      })
+    }
+    moveSnow(arr)
+`
+
+    // 生成100朵雪花
+    let arr = []
+    for (let i = 0; i < 100; i++) {
+      arr.push(createSnow())
+    }
+
+    function moveSnow(arr) {
+      interValKey = window.requestAnimationFrame(() => {
+        move(arr)
+        moveSnow(arr);
+      })
+    }
+    moveSnow(arr)
+  }
+
+   function step9() {
+    code.innerText = `最后, 加亿点小细节, 比如把下血变成下雪, 更加贴近视觉的近大远小, 近快远慢, 用鼠标模拟脑袋, 鼠标移动`
+  }
+  function step10() {
+    window.open("./index.html", "_blank")
+  }
+
+
+  // 创建一个雪花, 临时方法
+  function createSnowTemp() {
+    return {
+      x: 100,
+      y: 0,
+      width: 50
+    }
+  }
+
+  // 创建一个雪花, 随机的
+  function createSnow(flag = false) {
+    // let random = Math.random()
+    return {
+      x: Math.random() * 400,
+      y: (flag ? -Math.random() * 100 : Math.random() * 400),
+      width: Math.random() * 10,
+      speed: Math.random() * 1.5 + 0.5
+    }
+  }
+
+  function move(snowArr) {
+    clearCan()
+    for (let i = 0; i < snowArr.length; i++) {
+      snowArr[i].y += snowArr[i].speed
+      if (snowArr[i].y > 470) {
+        snowArr[i] = createSnow(true)
+      }
+      drawSnow(snowArr[i])
+    }
+  }
+
+  // 绘制snow
+  function drawSnow(snow) {
+    can.beginPath()
+    can.arc(snow.x, snow.y, snow.width, START, END)
+    // 创建径向渐变
+    let lingrad = can.createRadialGradient(
+      snow.x, snow.y, snow.width / 4,
+      snow.x, snow.y, snow.width,
+    )
+    lingrad.addColorStop(0, "rgba(255,0,0,1)")
+    lingrad.addColorStop(1, "rgba(255,0,0,0)")
+
+    can.closePath()
+    can.strokeStyle = 'rgba(0,0,0,0)'
+    can.fillStyle = lingrad
+    can.fill()
+    can.stroke()
+  }
+
+
+</script>
+</html>
