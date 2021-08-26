@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>canvas下雪教程</title>
     <style>
         html, body {
             margin: 0;
@@ -93,7 +93,7 @@
   const START = 0
   const END = 2 * Math.PI
   let interValKey = null;
-
+  next()
   function pre() {
     clear();
     if (step <= 0) {
@@ -266,7 +266,7 @@ can.stroke()
   }
 
   function step6() {
-    desc.innerText = `接下来让雪花真正的动起来, 这里暂时先使用定时器, 其实定时器有个问题, 无法真正获取到用户屏幕刷新率, 经常玩游戏的肯定知道有一个选项叫垂直同步, 其实就是获取显示器刷新率然后锁死刷新率上限, 有更好的办法让它随着屏幕刷新率定时执行, 这个待会说到`
+    desc.innerText = `接下来让雪花真正的动起来, 这里暂时先使用定时器, 其实定时器有个问题, 无法真正获取到用户屏幕刷新率, 经常玩游戏的肯定知道有一个选项叫垂直同步, 其实就是获取显示器刷新率然后控制显卡输出的频率让其与显示器刷新时间一致, 有更好的办法让它随着屏幕刷新率定时执行, 这个待会说到`
     code.innerText = `let snow = createSnow();
 function clearCan() {
   can.clearRect(0, 0, 400, 400)
@@ -353,7 +353,7 @@ interValKey = setInterval(()=>{
   }
 
    function step9() {
-    code.innerText = `最后, 加亿点小细节, 比如把下血变成下雪, 更加贴近视觉的近大远小, 近快远慢, 用鼠标模拟脑袋, 鼠标移动`
+    desc.innerText = `最后, 加亿点小细节, 比如把下血变成下雪, 更加贴近视觉的近大远小, 近快远慢, 用鼠标模拟脑袋, 鼠标移动雪花跟着移动, 增加左右随机偏移和添加一些透明值,让雪花看起来更加真实一点, 接下来可以一起来看看成品`
   }
   function step10() {
     window.open("./index.html", "_blank")
