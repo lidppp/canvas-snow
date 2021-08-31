@@ -95,20 +95,20 @@
   let interValKey = null;
   next()
   function pre() {
-    clear();
-    if (step <= 0) {
+    if (!window["step" + (step-1)]) {
       return
     }
+    clear();
     step--;
     window["step" + step]();
   }
 
   function next() {
     console.log("next")
-    clear();
-    if (step >= 100) {
+    if (!window["step" + (step+1)]) {
       return
     }
+    clear();
     step++;
     window["step" + step]();
   }
@@ -356,7 +356,7 @@ interValKey = setInterval(()=>{
     desc.innerText = `最后, 加亿点小细节, 比如把下血变成下雪, 更加贴近视觉的近大远小, 近快远慢, 用鼠标模拟脑袋, 鼠标移动雪花跟着移动, 增加左右随机偏移和添加一些透明值,让雪花看起来更加真实一点, 接下来可以一起来看看成品`
   }
   function step10() {
-    window.open("./index.html", "_blank")
+    location.href = "./index.html"
   }
 
 
