@@ -1,3 +1,4 @@
+import Snow from "./snow.js";
 let snow;
 
 window.onload = function () {
